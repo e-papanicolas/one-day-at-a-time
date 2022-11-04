@@ -1,0 +1,86 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateEntryInput {
+  date: DateTime!
+  image_url: String!
+  userId: Float!
+}
+
+input CreateNoteInput {
+  content: String!
+  entryId: Float!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Entry {
+  date: DateTime!
+  id: ID!
+  image_url: String!
+  notes: [Note!]
+  userId: Float!
+}
+
+type Mutation {
+  createEntry(createEntryInput: CreateEntryInput!): Entry!
+  createNote(createNoteInput: CreateNoteInput!): Note!
+  createUser(createUserInput: CreateUserInput!): User!
+  removeEntry(id: ID!): Entry!
+  removeNote(id: ID!): Note!
+  removeUser(id: ID!): User!
+  updateEntry(updateEntryInput: UpdateEntryInput!): Entry!
+  updateNote(updateNoteInput: UpdateNoteInput!): Note!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Note {
+  content: String!
+  entryId: Float!
+  id: ID!
+}
+
+type Query {
+  User(id: ID!): User!
+  Users: [User!]!
+  entry(id: ID!): Entry!
+  note(id: ID!): Note!
+}
+
+input UpdateEntryInput {
+  date: DateTime!
+  id: ID!
+  image_url: String!
+  userId: Float!
+}
+
+input UpdateNoteInput {
+  content: String!
+  entryId: Float
+  id: ID!
+}
+
+input UpdateUserInput {
+  email: String!
+  id: ID!
+  name: String!
+  password: String!
+}
+
+type User {
+  email: String!
+  entries: Entry
+  id: ID!
+  name: String!
+  password: String!
+}
