@@ -1,6 +1,16 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A photo-a-day journal.
+
+## Technologies
+
+- Typescript
+- Nest.js: back end framework
+- Apollo GraphQL: GraphQL server
+- PostgreSQL: relational database
+- Prisma: ORM
+- Docker: container for database
+- Jest: testing
 
 ## Installation
 
