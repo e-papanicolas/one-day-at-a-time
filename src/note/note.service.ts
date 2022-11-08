@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateNoteInput, UpdateNoteInput } from '../core/dto/note.input';
-import { Note } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -11,8 +10,12 @@ export class NoteService {
     return this.prisma.note.create({ data: createNoteInput });
   }
 
-  async findAll() {
-    return this.prisma.note.findMany();
+  async findAll(entryId: number) {
+    return this.prisma.note.findMany({
+      where: {
+        entryId,
+      },
+    });
   }
 
   async findOne(id: number) {

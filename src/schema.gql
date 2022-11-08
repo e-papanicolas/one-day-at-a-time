@@ -5,12 +5,12 @@
 input CreateEntryInput {
   date: DateTime!
   image_url: String!
-  userId: Float!
+  userId: Int!
 }
 
 input CreateNoteInput {
   content: String!
-  entryId: Float!
+  entryId: Int!
 }
 
 input CreateUserInput {
@@ -26,19 +26,19 @@ scalar DateTime
 
 type Entry {
   date: DateTime!
-  id: ID!
+  id: Int!
   image_url: String!
-  notes: [Note!]
-  userId: Float!
+  notes: [Note!]!
+  userId: Int!
 }
 
 type Mutation {
   createEntry(createEntryInput: CreateEntryInput!): Entry!
   createNote(createNoteInput: CreateNoteInput!): Note!
   createUser(createUserInput: CreateUserInput!): User!
-  removeEntry(id: ID!): Entry!
-  removeNote(id: ID!): Note!
-  removeUser(id: ID!): User!
+  removeEntry(id: Float!): Entry!
+  removeNote(id: Float!): Note!
+  removeUser(id: Float!): User!
   updateEntry(updateEntryInput: UpdateEntryInput!): Entry!
   updateNote(updateNoteInput: UpdateNoteInput!): Note!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -46,41 +46,41 @@ type Mutation {
 
 type Note {
   content: String!
-  entryId: Float!
-  id: ID!
+  entryId: Int!
+  id: Int!
 }
 
 type Query {
-  User(id: ID!): User!
-  Users: [User!]!
-  entry(id: ID!): Entry!
-  note(id: ID!): Note!
+  entry(id: Float!): Entry!
+  note(id: Float!): Note!
+  user(id: Int!): User!
+  users: [User!]!
 }
 
 input UpdateEntryInput {
   date: DateTime!
-  id: ID!
+  id: Int!
   image_url: String!
-  userId: Float!
+  userId: Int!
 }
 
 input UpdateNoteInput {
   content: String!
-  entryId: Float
-  id: ID!
+  entryId: Int
+  id: Int!
 }
 
 input UpdateUserInput {
   email: String!
-  id: ID!
+  id: Int!
   name: String!
   password: String!
 }
 
 type User {
   email: String!
-  entries: Entry
-  id: ID!
+  entries: [Entry!]!
+  id: Int!
   name: String!
   password: String!
 }

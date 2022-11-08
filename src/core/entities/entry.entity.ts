@@ -1,12 +1,11 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { User } from './user.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Note } from './note.entity';
 
 // TODO: use the scalar for dateTime here
 
 @ObjectType()
 export class Entry {
-  @Field(() => ID)
+  @Field(() => Int)
   id: number;
 
   @Field()
@@ -15,9 +14,9 @@ export class Entry {
   @Field()
   date: Date;
 
-  @Field()
+  @Field(() => Int)
   userId: number;
 
-  @Field(() => [Note], { nullable: true })
+  @Field(() => [Note], { nullable: 'items' })
   notes?: Note[] | null;
 }

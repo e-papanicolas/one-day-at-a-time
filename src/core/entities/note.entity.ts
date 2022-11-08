@@ -1,14 +1,13 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Entry } from './entry.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Note {
-  @Field(() => ID)
+  @Field(() => Int)
   id: number;
 
   @Field()
   content: string;
 
-  @Field()
+  @Field(() => Int)
   entryId: number;
 }

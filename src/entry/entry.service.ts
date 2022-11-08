@@ -12,8 +12,12 @@ export class EntryService {
     });
   }
 
-  async findAll() {
-    return this.prisma.entry.findMany();
+  async findAll(userId: number) {
+    return this.prisma.entry.findMany({
+      where: {
+        userId,
+      },
+    });
   }
 
   async findOne(id: number) {

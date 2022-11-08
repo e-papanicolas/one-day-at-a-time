@@ -1,9 +1,9 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Entry } from './entry.entity';
 
 @ObjectType()
 export class User {
-  @Field(() => ID)
+  @Field(() => Int)
   id: number;
 
   @Field()
@@ -15,6 +15,6 @@ export class User {
   @Field()
   password: string;
 
-  @Field(() => Entry, { nullable: true })
+  @Field(() => [Entry], { nullable: 'items' })
   entries?: Entry[] | null;
 }
