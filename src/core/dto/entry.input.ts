@@ -17,12 +17,9 @@ export class UpdateEntryInput extends PartialType(CreateEntryInput) {
   @Field(() => Int)
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   image_url: string;
 
-  @Field()
+  @Field({ nullable: true })
   date: Date;
-
-  @Field(() => Int)
-  userId: number;
 }

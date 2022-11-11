@@ -9,22 +9,26 @@ export class NoteResolver {
   constructor(private readonly noteService: NoteService) {}
 
   @Mutation(() => Note)
-  async createNote(@Args('createNoteInput') createNoteInput: CreateNoteInput) {
+  async createNote(
+    @Args('createNoteInput') createNoteInput: CreateNoteInput,
+  ): Promise<Note> {
     return this.noteService.create(createNoteInput);
   }
 
   @Query(() => Note, { name: 'note' })
-  async findOne(@Args('id', ParseIntPipe) id: number) {
+  async findOne(@Args('id', ParseIntPipe) id: number): Promise<Note | null> {
     return this.noteService.findOne(id);
   }
 
   @Mutation(() => Note)
-  async updateNote(@Args('updateNoteInput') updateNoteInput: UpdateNoteInput) {
+  async updateNote(
+    @Args('updateNoteInput') updateNoteInput: UpdateNoteInput,
+  ): Promise<Note> {
     return this.noteService.update(updateNoteInput);
   }
 
-  @Mutation(() => Note)
-  async removeNote(@Args('id', ParseIntPipe) id: number) {
+  @Mutation(() => Note, { nullable: true })
+  async removeNote(@Args('id', ParseIntPipe) id: number): Promise<Note | null> {
     return this.noteService.remove(id);
   }
 }

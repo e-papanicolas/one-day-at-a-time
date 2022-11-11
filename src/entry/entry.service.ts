@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Entry } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEntryInput, UpdateEntryInput } from '../core/dto/entry.input';
 
@@ -6,13 +7,13 @@ import { CreateEntryInput, UpdateEntryInput } from '../core/dto/entry.input';
 export class EntryService {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
-  async create(createEntryInput: CreateEntryInput) {
+  async create(createEntryInput: CreateEntryInput): Promise<Entry> {
     return this.prisma.entry.create({
       data: createEntryInput,
     });
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: number): Promise<Entry[]> {
     return this.prisma.entry.findMany({
       where: {
         userId,
@@ -20,7 +21,7 @@ export class EntryService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Entry | null> {
     return this.prisma.entry.findUnique({
       where: {
         id,
@@ -28,16 +29,16 @@ export class EntryService {
     });
   }
 
-  async update(updateEntryInput: UpdateEntryInput) {
+  async update(updateEntryInput: UpdateEntryInput): Promise<Entry> {
     return this.prisma.entry.update({
       where: {
         id: updateEntryInput.id,
       },
-      data: {},
+      data: updateEntryInput,
     });
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Entry | null> {
     return this.prisma.entry.delete({
       where: {
         id,

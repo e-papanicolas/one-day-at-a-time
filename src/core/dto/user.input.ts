@@ -19,13 +19,13 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field(() => Int)
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsEmail()
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   password: string;
 }

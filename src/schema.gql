@@ -36,9 +36,9 @@ type Mutation {
   createEntry(createEntryInput: CreateEntryInput!): Entry!
   createNote(createNoteInput: CreateNoteInput!): Note!
   createUser(createUserInput: CreateUserInput!): User!
-  removeEntry(id: Float!): Entry!
-  removeNote(id: Float!): Note!
-  removeUser(id: Float!): User!
+  removeEntry(id: Float!): Entry
+  removeNote(id: Float!): Note
+  removeUser(id: Float!): User
   updateEntry(updateEntryInput: UpdateEntryInput!): Entry!
   updateNote(updateNoteInput: UpdateNoteInput!): Note!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -58,23 +58,23 @@ type Query {
 }
 
 input UpdateEntryInput {
-  date: DateTime!
+  date: DateTime
   id: Int!
-  image_url: String!
-  userId: Int!
+  image_url: String
+  userId: Int
 }
 
 input UpdateNoteInput {
-  content: String!
+  content: String
   entryId: Int
   id: Int!
 }
 
 input UpdateUserInput {
-  email: String!
+  email: String
   id: Int!
-  name: String!
-  password: String!
+  name: String
+  password: String
 }
 
 type User {

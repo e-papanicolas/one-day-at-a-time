@@ -14,6 +14,6 @@ export class UpdateNoteInput extends PartialType(CreateNoteInput) {
   @Field(() => Int)
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   content: string;
 }

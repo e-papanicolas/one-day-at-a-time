@@ -22,14 +22,14 @@ model Entry {
   id        Int      @id @default(autoincrement())
   image_url String
   date      DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
   notes     Note[]
-  userId    Int
+  userId    Int?
 }
 
 model Note {
   id      Int    @id @default(autoincrement())
   content String
-  entry   Entry  @relation(fields: [entryId], references: [id])
-  entryId Int
+  entry   Entry? @relation(fields: [entryId], references: [id])
+  entryId Int?
 }

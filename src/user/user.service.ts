@@ -36,7 +36,7 @@ export class UserService {
     });
   }
 
-  async remove(id: number): Promise<User> {
+  async remove(id: number): Promise<User | null> {
     return this.prisma.user.delete({
       where: {
         id,

@@ -51,8 +51,8 @@ export class UserResolver {
     return this.userService.update(updateUserInput);
   }
 
-  @Mutation(() => User)
-  async removeUser(@Args('id', ParseIntPipe) id: number): Promise<User> {
+  @Mutation(() => User, { nullable: true })
+  async removeUser(@Args('id', ParseIntPipe) id: number): Promise<User | null> {
     return this.userService.remove(id);
   }
 }

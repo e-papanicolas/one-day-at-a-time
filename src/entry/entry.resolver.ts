@@ -23,12 +23,12 @@ export class EntryResolver {
   @Mutation(() => Entry)
   async createEntry(
     @Args('createEntryInput') createEntryInput: CreateEntryInput,
-  ) {
+  ): Promise<Entry> {
     return this.entryService.create(createEntryInput);
   }
 
   @Query(() => Entry, { name: 'entry' })
-  async findOne(@Args('id', ParseIntPipe) id: number) {
+  async findOne(@Args('id', ParseIntPipe) id: number): Promise<Entry | null> {
     return this.entryService.findOne(id);
   }
 
@@ -41,12 +41,14 @@ export class EntryResolver {
   @Mutation(() => Entry)
   async updateEntry(
     @Args('updateEntryInput') updateEntryInput: UpdateEntryInput,
-  ) {
+  ): Promise<Entry> {
     return this.entryService.update(updateEntryInput);
   }
 
-  @Mutation(() => Entry)
-  async removeEntry(@Args('id', ParseIntPipe) id: number) {
+  @Mutation(() => Entry, { nullable: true })
+  async removeEntry(
+    @Args('id', ParseIntPipe) id: number,
+  ): Promise<Entry | null> {
     return this.entryService.remove(id);
   }
 }
