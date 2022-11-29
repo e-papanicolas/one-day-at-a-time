@@ -6,6 +6,8 @@ import {
   Int,
   ResolveField,
   Parent,
+  Context,
+  GqlExecutionContext,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from '../core/entities/user.entity';
@@ -13,6 +15,8 @@ import { CreateUserInput, UpdateUserInput } from '../core/dto/user.input';
 import { Inject, ParseIntPipe } from '@nestjs/common';
 import { EntryService } from 'src/entry/entry.service';
 import { Entry } from 'src/core/entities/entry.entity';
+import { CurrentUser } from 'src/auth/auth.guard';
+import { Public } from 'src/auth/auth.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -21,6 +25,16 @@ export class UserResolver {
     @Inject(EntryService) private readonly entryService: EntryService,
   ) {}
 
+  @Query(() => User, { name: 'currentUser' })
+  async whoAmI(@CurrentUser() user: User): Promise<User> {
+    console.log('IN WHOAMI', user);
+    const result = await this.userService.findByEmail(user.email);
+    console.log(result);
+    return result;
+  }
+
+  // TODO: does this need an auth guard? or public
+  @Public()
   @Mutation(() => User)
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
@@ -29,7 +43,8 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  async findAll(): Promise<User[]> {
+  async findAll(@Context() ctx: GqlExecutionContext): Promise<User[]> {
+    console.log('CTX', ctx);
     return this.userService.findAll();
   }
 

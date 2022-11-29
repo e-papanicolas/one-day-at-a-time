@@ -32,10 +32,20 @@ type Entry {
   userId: Int!
 }
 
+type LoginResult {
+  token: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createEntry(createEntryInput: CreateEntryInput!): Entry!
   createNote(createNoteInput: CreateNoteInput!): Note!
   createUser(createUserInput: CreateUserInput!): User!
+  login(loginInput: LoginUserInput!): LoginResult!
   removeEntry(id: Float!): Entry
   removeNote(id: Float!): Note
   removeUser(id: Float!): User
@@ -51,6 +61,7 @@ type Note {
 }
 
 type Query {
+  currentUser: User!
   entry(id: Float!): Entry!
   note(id: Float!): Note!
   user(id: Int!): User!
