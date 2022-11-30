@@ -21,7 +21,7 @@ export class EntryService {
     });
   }
 
-  async findOne(id: number): Promise<Entry | null> {
+  async findOneById(id: number): Promise<Entry | null> {
     return this.prisma.entry.findUnique({
       where: {
         id,

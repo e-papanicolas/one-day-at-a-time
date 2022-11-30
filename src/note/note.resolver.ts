@@ -16,8 +16,10 @@ export class NoteResolver {
   }
 
   @Query(() => Note, { name: 'note' })
-  async findOne(@Args('id', ParseIntPipe) id: number): Promise<Note | null> {
-    return this.noteService.findOne(id);
+  async findOneById(
+    @Args('id', ParseIntPipe) id: number,
+  ): Promise<Note | null> {
+    return this.noteService.findOneById(id);
   }
 
   @Mutation(() => Note)

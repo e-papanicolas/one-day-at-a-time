@@ -3,7 +3,7 @@ export abstract class IGenericRepository<T> {
 
   abstract findAll(): Promise<T[]>;
 
-  abstract findOne(id: number): Promise<T>;
+  abstract findOneById(id: number): Promise<T>;
 
   abstract update(id: number, item: T): Promise<T>;
 

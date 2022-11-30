@@ -15,6 +15,8 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { GqlAuthGuard } from './auth/auth.guard';
+import { ConfigModule } from '@nestjs/config';
+// import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -28,8 +30,26 @@ import { GqlAuthGuard } from './auth/auth.guard';
       sortSchema: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      },
     }),
     AuthModule,
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+      cache: true,
+      // validationSchema: Joi.object({
+      //   PORT: Joi.number().default(8082),
+      //   DATABASE_URL: Joi.string().required(),
+      //   JWT_SECRET: Joi.string().required(),
+      // }),
+      // validationOptions: {
+      //   allowUnknown: false,
+      //   abortEarly: true,
+      // },
+    }),
   ],
   controllers: [AppController],
   providers: [
