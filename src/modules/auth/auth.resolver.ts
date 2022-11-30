@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { LoginResult, LoginUserInput } from 'src/core/dto/auth.input';
+import { LoginResult, LoginUserInput } from '../../core/dto/auth.input';
 import { Public } from './auth.decorator';
 import { AuthService } from './auth.service';
 

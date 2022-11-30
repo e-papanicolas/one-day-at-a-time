@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { NoteResolver } from './note.resolver';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaModule } from '../../providers/prisma/prisma.module';
+import { PrismaService } from '../../providers/prisma/prisma.service';
 
 @Module({
   providers: [NoteResolver, NoteService, PrismaService],

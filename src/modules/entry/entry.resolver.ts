@@ -7,11 +7,11 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { EntryService } from './entry.service';
-import { Entry } from '../core/entities/entry.entity';
-import { CreateEntryInput, UpdateEntryInput } from '../core/dto/entry.input';
+import { Entry } from '../../core/entities/entry.entity';
+import { CreateEntryInput, UpdateEntryInput } from '../../core/dto/entry.input';
 import { Inject, ParseIntPipe } from '@nestjs/common';
-import { Note } from 'src/core/entities/note.entity';
-import { NoteService } from 'src/note/note.service';
+import { Note } from '../../core/entities/note.entity';
+import { NoteService } from '../../modules/note/note.service';
 
 @Resolver(() => Entry)
 export class EntryResolver {

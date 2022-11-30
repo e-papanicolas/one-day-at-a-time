@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { NoteService } from './note.service';
-import { Note } from '../core/entities/note.entity';
-import { CreateNoteInput, UpdateNoteInput } from '../core/dto/note.input';
+import { Note } from '../../core/entities/note.entity';
+import { CreateNoteInput, UpdateNoteInput } from '../../core/dto/note.input';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Resolver(() => Note)
