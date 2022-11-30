@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Entry } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateEntryInput, UpdateEntryInput } from '../core/dto/entry.input';
+import { PrismaService } from '../../providers/prisma/prisma.service';
+import { CreateEntryInput, UpdateEntryInput } from '../../core/dto/entry.input';
 
 @Injectable()
 export class EntryService {
