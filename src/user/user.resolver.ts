@@ -6,8 +6,6 @@ import {
   Int,
   ResolveField,
   Parent,
-  Context,
-  GqlExecutionContext,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from '../core/entities/user.entity';
@@ -27,13 +25,9 @@ export class UserResolver {
 
   @Query(() => User, { name: 'currentUser' })
   async whoAmI(@CurrentUser() user: User): Promise<User> {
-    console.log('IN WHOAMI', user);
-    const result = await this.userService.findByEmail(user.email);
-    console.log(result);
-    return result;
+    return this.userService.findOneByEmail(user.email);
   }
 
-  // TODO: does this need an auth guard? or public
   @Public()
   @Mutation(() => User)
   async createUser(
@@ -43,14 +37,15 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  async findAll(@Context() ctx: GqlExecutionContext): Promise<User[]> {
-    console.log('CTX', ctx);
+  async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
   @Query(() => User, { name: 'user' })
-  async findOne(@Args('id', { type: () => Int }) id: number): Promise<User> {
-    return this.userService.findOne(id);
+  async findOneById(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<User> {
+    return this.userService.findOneById(id);
   }
 
   @ResolveField('entries', () => [Entry])
@@ -67,7 +62,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { nullable: true })
-  async removeUser(@Args('id', ParseIntPipe) id: number): Promise<User | null> {
+  async removeUser(@Args('id', ParseIntPipe) id: number): Promise<User> {
     return this.userService.remove(id);
   }
 }

@@ -19,7 +19,7 @@ export class NoteService {
     });
   }
 
-  async findOne(id: number): Promise<Note | null> {
+  async findOneById(id: number): Promise<Note | null> {
     return this.prisma.note.findUnique({
       where: {
         id,

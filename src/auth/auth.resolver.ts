@@ -12,7 +12,6 @@ export class AuthResolver {
   async login(
     @Args('loginInput') loginInput: LoginUserInput,
   ): Promise<LoginResult> {
-    const result = await this.authService.login(loginInput);
-    return result;
+    return this.authService.login(loginInput);
   }
 }

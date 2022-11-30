@@ -28,8 +28,10 @@ export class EntryResolver {
   }
 
   @Query(() => Entry, { name: 'entry' })
-  async findOne(@Args('id', ParseIntPipe) id: number): Promise<Entry | null> {
-    return this.entryService.findOne(id);
+  async findOneById(
+    @Args('id', ParseIntPipe) id: number,
+  ): Promise<Entry | null> {
+    return this.entryService.findOneById(id);
   }
 
   @ResolveField('notes', () => [Note])
