@@ -1,35 +1,36 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { NoteService } from './note.service';
-import { Note } from '../../core/entities/note.entity';
+import { Note as NoteEntity } from '../../core/entities/note.entity';
+import { Note } from '@prisma/client';
 import { CreateNoteInput, UpdateNoteInput } from '../../core/dto/note.input';
 import { ParseIntPipe } from '@nestjs/common';
 
-@Resolver(() => Note)
+@Resolver(() => NoteEntity)
 export class NoteResolver {
   constructor(private readonly noteService: NoteService) {}
 
-  @Mutation(() => Note)
+  @Mutation(() => NoteEntity)
   async createNote(
     @Args('createNoteInput') createNoteInput: CreateNoteInput,
   ): Promise<Note> {
     return this.noteService.create(createNoteInput);
   }
 
-  @Query(() => Note, { name: 'note' })
+  @Query(() => NoteEntity, { name: 'note' })
   async findOneById(
     @Args('id', ParseIntPipe) id: number,
   ): Promise<Note | null> {
     return this.noteService.findOneById(id);
   }
 
-  @Mutation(() => Note)
+  @Mutation(() => NoteEntity)
   async updateNote(
     @Args('updateNoteInput') updateNoteInput: UpdateNoteInput,
   ): Promise<Note> {
     return this.noteService.update(updateNoteInput);
   }
 
-  @Mutation(() => Note, { nullable: true })
+  @Mutation(() => NoteEntity, { nullable: true })
   async removeNote(@Args('id', ParseIntPipe) id: number): Promise<Note | null> {
     return this.noteService.remove(id);
   }
