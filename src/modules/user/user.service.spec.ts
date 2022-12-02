@@ -1,31 +1,32 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { PrismaService } from '../../providers/prisma/prisma.service';
+import {
+  MockContext,
+  Context,
+  createMockContext,
+} from '../../providers/prisma/context';
+import { CreateUserInput } from 'src/core/dto/user.input';
 
 describe('UserService', () => {
   let service: UserService;
   let prismaService: PrismaService;
 
-  const mockPrismaService = () => ({
-    user: {
-      findOneById: jest.fn(),
-      findOneByEmail: jest.fn(),
-      findAll: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      remove: jest.fn(),
-    },
-    $queryRaw: jest.fn(),
-  });
+  let mockCtx: MockContext;
+  let ctx: Context;
 
   beforeEach(async () => {
+    mockCtx = createMockContext();
+    ctx = mockCtx as unknown as Context;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
-        {
-          provide: PrismaService,
-          useFactory: mockPrismaService,
-        },
+        PrismaService,
+        // {
+        //   provide: PrismaService,
+        //   useValue: mockCtx.prisma,
+        // },
       ],
     }).compile();
 
@@ -36,5 +37,22 @@ describe('UserService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(prismaService).toBeDefined();
+  });
+
+  it('should create a new user', async () => {
+    const user: CreateUserInput = {
+      name: 'Test Name',
+      email: 'test1@email.com',
+      password: 'password',
+    };
+
+    mockCtx.prisma.user.create.mockResolvedValue({
+      id: 1,
+      name: 'Test Name',
+      email: 'test1@email.com',
+      password: 'password',
+    });
+
+    // await expect(service.create(user)).resolves.toMatchObject(user);
   });
 });

@@ -12,9 +12,10 @@ import { User } from '../../core/entities/user.entity';
 import { CreateUserInput, UpdateUserInput } from '../../core/dto/user.input';
 import { Inject, ParseIntPipe } from '@nestjs/common';
 import { EntryService } from '../../modules/entry/entry.service';
-import { Entry } from '../../core/entities/entry.entity';
+import { Entry } from '@prisma/client';
 import { CurrentUser } from '../../modules/auth/auth.guard';
 import { Public } from '../../modules/auth/auth.decorator';
+import { Entry as EntryEntity } from '../../core/entities/entry.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -24,7 +25,7 @@ export class UserResolver {
   ) {}
 
   @Query(() => User, { name: 'currentUser' })
-  async whoAmI(@CurrentUser() user: User): Promise<User> {
+  async whoAmI(@CurrentUser() user: User): Promise<User | null> {
     return this.userService.findOneByEmail(user.email);
   }
 
@@ -36,6 +37,7 @@ export class UserResolver {
     return this.userService.create(createUserInput);
   }
 
+  @Public()
   @Query(() => [User], { name: 'users' })
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
@@ -48,7 +50,7 @@ export class UserResolver {
     return this.userService.findOneById(id);
   }
 
-  @ResolveField('entries', () => [Entry])
+  @ResolveField('entries', () => [EntryEntity])
   async getEntries(@Parent() user: User): Promise<Entry[]> {
     const id = user.id;
     return this.entryService.findAll(id);

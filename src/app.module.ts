@@ -13,10 +13,9 @@ import { PrismaModule } from './providers/prisma/prisma.module';
 import { PrismaService } from './providers/prisma/prisma.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './modules/auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { GqlAuthGuard } from './modules/auth/auth.guard';
 import { ConfigModule } from '@nestjs/config';
-// import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -36,19 +35,11 @@ import { ConfigModule } from '@nestjs/config';
       },
     }),
     AuthModule,
+    JwtModule,
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       isGlobal: true,
       cache: true,
-      // validationSchema: Joi.object({
-      //   PORT: Joi.number().default(8082),
-      //   DATABASE_URL: Joi.string().required(),
-      //   JWT_SECRET: Joi.string().required(),
-      // }),
-      // validationOptions: {
-      //   allowUnknown: false,
-      //   abortEarly: true,
-      // },
     }),
   ],
   controllers: [AppController],

@@ -25,8 +25,12 @@ export class AuthService {
     const user = await this.validateUser(userLogin.email, userLogin.password);
     if (user) {
       const payload = { email: user.email, sub: user.id };
+      const options = { secret: 'secret' };
+
+      const token = this.jwtService.sign(payload, options);
+
       return {
-        token: this.jwtService.sign(payload),
+        token,
       };
     } else {
       throw new UnauthorizedException('Incorrect login credentials');
