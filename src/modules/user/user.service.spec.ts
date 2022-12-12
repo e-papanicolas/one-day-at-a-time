@@ -1,33 +1,44 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { PrismaService } from '../../providers/prisma/prisma.service';
-import {
-  MockContext,
-  Context,
-  createMockContext,
-} from '../../providers/prisma/context';
-import { CreateUserInput } from 'src/core/dto/user.input';
+import { CreateUserInput, UpdateUserInput } from '../../core/dto/user.input';
+import { User } from '../../core/entities/user.entity';
 
 describe('UserService', () => {
   let service: UserService;
   let prismaService: PrismaService;
 
-  let mockCtx: MockContext;
-  let ctx: Context;
+  const testUserResult = {
+    id: 1,
+    email: 'tester@email.com',
+    name: 'Tester',
+    password: 'password',
+  } as User;
 
-  beforeEach(async () => {
-    mockCtx = createMockContext();
-    ctx = mockCtx as unknown as Context;
+  const testUserTwo = {
+    id: 2,
+    name: 'Eleni',
+    email: 'eleni@test.com',
+    password: 'password',
+  } as User;
 
+  const testUserInput = {
+    name: 'Tester',
+    email: 'tester@email.com',
+    password: 'password',
+  } as CreateUserInput;
+
+  const testUserUpdateInput = {
+    id: 1,
+    name: 'Tester',
+    email: 'tester@email.com',
+  } as UpdateUserInput;
+
+  const allTestUsers = [testUserResult, testUserTwo];
+
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UserService,
-        PrismaService,
-        // {
-        //   provide: PrismaService,
-        //   useValue: mockCtx.prisma,
-        // },
-      ],
+      providers: [UserService, PrismaService],
     }).compile();
 
     prismaService = module.get<PrismaService>(PrismaService);
@@ -39,20 +50,68 @@ describe('UserService', () => {
     expect(prismaService).toBeDefined();
   });
 
-  it('should create a new user', async () => {
-    const user: CreateUserInput = {
-      name: 'Test Name',
-      email: 'test1@email.com',
-      password: 'password',
-    };
+  describe('create user', () => {
+    it('should create a new user', async () => {
+      jest
+        .spyOn(prismaService.user, 'create')
+        .mockResolvedValue(testUserResult);
+      const result = await service.create(testUserInput);
 
-    mockCtx.prisma.user.create.mockResolvedValue({
-      id: 1,
-      name: 'Test Name',
-      email: 'test1@email.com',
-      password: 'password',
+      expect(result).toMatchObject(testUserResult);
+    });
+  });
+
+  describe('find unique users', () => {
+    it('should return a user by id', async () => {
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockResolvedValue(testUserResult);
+      const result = await service.findOneById(testUserResult.id);
+
+      expect(result).toEqual(testUserResult);
     });
 
-    // await expect(service.create(user)).resolves.toMatchObject(user);
+    it('should return a user by email', async () => {
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockResolvedValue(testUserResult);
+      const result = await service.findOneByEmail(testUserResult.email);
+
+      expect(result).toEqual(testUserResult);
+    });
+  });
+
+  describe('find many users', () => {
+    it('should return an array of users', async () => {
+      jest
+        .spyOn(prismaService.user, 'findMany')
+        .mockResolvedValue(allTestUsers);
+
+      expect(await service.findAll()).toBe(allTestUsers);
+    });
+  });
+
+  describe('updates a user', () => {
+    it('should return an updated user', async () => {
+      jest
+        .spyOn(prismaService.user, 'update')
+        .mockResolvedValue(testUserResult);
+
+      const result = await service.update(testUserUpdateInput);
+
+      expect(result).toEqual(testUserResult);
+    });
+  });
+
+  describe('removes a user', () => {
+    it('should return the removed user', async () => {
+      jest
+        .spyOn(prismaService.user, 'delete')
+        .mockResolvedValue(testUserResult);
+
+      const result = await service.remove(testUserResult.id);
+
+      expect(result).toEqual(testUserResult);
+    });
   });
 });
