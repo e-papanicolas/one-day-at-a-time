@@ -1,45 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { PrismaService } from '../../providers/prisma/prisma.service';
-import { CreateUserInput, UpdateUserInput } from '../../core/dto/user.input';
-import { User } from '../../core/entities/user.entity';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  allTestUsers,
+  testErrorUpdateInput,
+  testUserCreateInput,
+  testUserResult,
+  testUserUpdateInput,
+} from './user.mocks';
 
 describe('UserService', () => {
   let service: UserService;
   let prismaService: PrismaService;
-
-  const testUserResult = {
-    id: 1,
-    email: 'tester@email.com',
-    name: 'Tester',
-    password: 'password',
-  } as User;
-
-  const testUserTwo = {
-    id: 2,
-    name: 'Eleni',
-    email: 'eleni@test.com',
-    password: 'password',
-  } as User;
-
-  const testUserInput = {
-    name: 'Tester',
-    email: 'tester@email.com',
-    password: 'password',
-  } as CreateUserInput;
-
-  const testUserUpdateInput = {
-    id: 1,
-    name: 'Tester',
-    email: 'tester@email.com',
-  } as UpdateUserInput;
-
-  const testErrorUpdateInput = {
-    id: 3,
-  } as UpdateUserInput;
-
-  const allTestUsers = [testUserResult, testUserTwo];
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -60,7 +33,7 @@ describe('UserService', () => {
       jest
         .spyOn(prismaService.user, 'create')
         .mockResolvedValue(testUserResult);
-      const result = await service.create(testUserInput);
+      const result = await service.create(testUserCreateInput);
 
       expect(result).toMatchObject(testUserResult);
     });
@@ -127,7 +100,7 @@ describe('UserService', () => {
         .mockRejectedValue(new ConflictException('User already exists'));
 
       expect(
-        await service.create(testUserInput).catch((e) => e),
+        await service.create(testUserCreateInput).catch((e) => e),
       ).toBeInstanceOf(ConflictException);
     });
   });
