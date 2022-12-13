@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { PrismaService } from '../../providers/prisma/prisma.service';
 import { CreateUserInput, UpdateUserInput } from '../../core/dto/user.input';
 import { User } from '../../core/entities/user.entity';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('UserService', () => {
   let service: UserService;
@@ -32,6 +33,10 @@ describe('UserService', () => {
     id: 1,
     name: 'Tester',
     email: 'tester@email.com',
+  } as UpdateUserInput;
+
+  const testErrorUpdateInput = {
+    id: 3,
   } as UpdateUserInput;
 
   const allTestUsers = [testUserResult, testUserTwo];
@@ -112,6 +117,46 @@ describe('UserService', () => {
       const result = await service.remove(testUserResult.id);
 
       expect(result).toEqual(testUserResult);
+    });
+  });
+
+  describe('throws a conflict exception during create', () => {
+    it('throws when the user already exists', async () => {
+      jest
+        .spyOn(prismaService.user, 'create')
+        .mockRejectedValue(new ConflictException('User already exists'));
+
+      expect(
+        await service.create(testUserInput).catch((e) => e),
+      ).toBeInstanceOf(ConflictException);
+    });
+  });
+
+  describe('throws a not found exception during findOneById', () => {
+    it('throws when the userId does not exist', async () => {
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockRejectedValue(
+          new NotFoundException('User not found with provided id'),
+        );
+
+      expect(await service.findOneById(2).catch((e) => e)).toBeInstanceOf(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('throws a not found exceptio during update', () => {
+    it('throws when the userId does not exist', async () => {
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockRejectedValue(
+          new NotFoundException('User not found with provided id'),
+        );
+
+      expect(
+        await service.update(testErrorUpdateInput).catch((e) => e),
+      ).toBeInstanceOf(NotFoundException);
     });
   });
 });
