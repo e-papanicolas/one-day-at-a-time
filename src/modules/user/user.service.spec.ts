@@ -28,7 +28,7 @@ describe('UserService', () => {
     expect(prismaService).toBeDefined();
   });
 
-  describe('create user', () => {
+  describe('create', () => {
     it('should create a new user', async () => {
       jest
         .spyOn(prismaService.user, 'create')
@@ -39,7 +39,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('find unique users', () => {
+  describe('find one', () => {
     it('should return a user by id', async () => {
       jest
         .spyOn(prismaService.user, 'findUnique')
@@ -59,7 +59,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('find many users', () => {
+  describe('find all', () => {
     it('should return an array of users', async () => {
       jest
         .spyOn(prismaService.user, 'findMany')
@@ -69,7 +69,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('updates a user', () => {
+  describe('update', () => {
     it('should return an updated user', async () => {
       jest
         .spyOn(prismaService.user, 'update')
@@ -81,8 +81,8 @@ describe('UserService', () => {
     });
   });
 
-  describe('removes a user', () => {
-    it('should return the removed user', async () => {
+  describe('remove', () => {
+    it('should return the deleted user', async () => {
       jest
         .spyOn(prismaService.user, 'delete')
         .mockResolvedValue(testUserResult);
@@ -93,8 +93,8 @@ describe('UserService', () => {
     });
   });
 
-  describe('throws a conflict exception during create', () => {
-    it('throws when the user already exists', async () => {
+  describe('errors', () => {
+    it('throw a conflict exception when the user already exists', async () => {
       jest
         .spyOn(prismaService.user, 'create')
         .mockRejectedValue(new ConflictException('User already exists'));
@@ -103,10 +103,7 @@ describe('UserService', () => {
         await service.create(testUserCreateInput).catch((e) => e),
       ).toBeInstanceOf(ConflictException);
     });
-  });
-
-  describe('throws a not found exception during findOneById', () => {
-    it('throws when the userId does not exist', async () => {
+    it('throws a not found exception when the userId does not exist', async () => {
       jest
         .spyOn(prismaService.user, 'findUnique')
         .mockRejectedValue(
@@ -117,10 +114,8 @@ describe('UserService', () => {
         NotFoundException,
       );
     });
-  });
 
-  describe('throws a not found exceptio during update', () => {
-    it('throws when the userId does not exist', async () => {
+    it('throws a not found exception when the userId does not exist', async () => {
       jest
         .spyOn(prismaService.user, 'findUnique')
         .mockRejectedValue(
