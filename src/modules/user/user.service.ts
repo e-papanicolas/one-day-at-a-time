@@ -14,7 +14,10 @@ export class UserService {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
   async create(createUserInput: CreateUserInput): Promise<User> {
-    const user = await this.findOneByEmail(createUserInput.email);
+    const email = createUserInput.email;
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
 
     if (!user) {
       const salt = await bcrypt.genSalt(10);
