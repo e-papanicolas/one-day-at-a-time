@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { User } from '@prisma/client';
@@ -25,6 +25,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // further token validation, such as looking up the userId in a list of revoked tokens,
     const userId = payload.sub;
     const user = await this.userService.findOneById(userId);
+    if (!user) {
+      throw new BadRequestException('Unauthorized: User not authenticated');
+    }
     return user;
   }
 }

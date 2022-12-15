@@ -22,3 +22,12 @@ export class LoginResult {
   @Field()
   token: string;
 }
+
+@ObjectType()
+export class JWTPayload {
+  @Field()
+  email: string;
+
+  @Field()
+  sub: number;
+}

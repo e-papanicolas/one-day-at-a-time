@@ -11,6 +11,8 @@ A photo-a-day journal.
 - Prisma: ORM
 - Docker: container for database
 - Jest: testing
+- Redis: cache
+- React: front end framework
 
 ## Installation
 
@@ -46,8 +48,12 @@ $ npm run test:cov
 
 ## Notes
 
-`npx prisma migrate dev --name "<name>"` to run prisma schema migrations
+### Database
 
-`npx prisma generate` - run this command after every change to your Prisma models to update your generated Prisma Client.
+To run prisma schema migrations: `npx prisma migrate dev --name "<name>"`
 
-`http://localhost:3000/graphql` to launch the Apollo Graphql Sandbox
+Run after every change to Prisma models to update generated Prisma Client: `npx prisma generate`
+
+To clear the development DB and seed: `npx prisma migrate reset`
+
+To seed for the first time: `npx prisma db seed`
