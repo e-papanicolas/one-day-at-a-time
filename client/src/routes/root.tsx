@@ -1,17 +1,17 @@
-import React from "react";
-import "./styles/App.css";
-import { Link } from "react-router-dom";
-import Login from "./components/auth/login";
+import React from 'react';
+import '../styles/App.css';
+import { Outlet } from 'react-router-dom';
 
-function App() {
+function Root() {
   return (
     <div className="App">
       <header className="App-header">
         <h1>One Day at a Time</h1>
         <h2>a photo a day journal</h2>
       </header>
+      <Outlet />
     </div>
   );
 }
 
-export default App;
+export default Root;
