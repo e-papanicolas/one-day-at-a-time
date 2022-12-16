@@ -30,7 +30,7 @@ import { ConfigModule } from '@nestjs/config';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
       cors: {
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
         credentials: true,
       },
     }),
