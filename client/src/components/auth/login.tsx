@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LoginResult } from '../../__generated__/graphql';
+import { gql } from '../../__generated__';
 
 type Props = {};
 
-// const LOGIN_MUTATION = gql`
-//   mutation Login($loginInput: LoginUserInput!) {
-//     login(loginInput: $loginInput) {
-//       token
-//     }
-//   }
-// `;
+const LOGIN_MUTATION = gql(`
+  mutation Login($loginInput: LoginUserInput!) {
+    login(loginInput: $loginInput) {
+      token
+    }
+  }
+`);
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
@@ -18,19 +21,19 @@ const Login = (props: Props) => {
     password: '',
   });
 
-  // const [login] = useMutation(LOGIN_MUTATION, {
-  //   variables: {
-  //     loginInput: {
-  //       email: formState.email,
-  //       password: formState.password,
-  //     },
-  //   },
-  //   onCompleted: ({ login }) => {
-  //     localStorage.setItem('AUTH_TOKEN', login.token);
-  //     console.log(login);
-  //     navigate('/');
-  //   },
-  // });
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+    variables: {
+      loginInput: {
+        email: formState.email,
+        password: formState.password,
+      },
+    },
+    onCompleted: (loginResponse: LoginResult) => {
+      localStorage.setItem('token', loginResponse.token);
+      console.log(loginResponse);
+      navigate('/home');
+    },
+  });
 
   return (
     <div>
@@ -39,7 +42,7 @@ const Login = (props: Props) => {
         method="post"
         onSubmit={(event) => {
           event.preventDefault();
-          // login();
+          login();
         }}
       >
         <input
@@ -62,7 +65,7 @@ const Login = (props: Props) => {
             })
           }
           type="password"
-          placeholder="Choose a safe password"
+          placeholder="Your password"
         />
         <button type="submit">login</button>
       </form>
