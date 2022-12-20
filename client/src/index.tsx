@@ -13,7 +13,6 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  gql,
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -39,20 +38,6 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
-client
-  .query({
-    query: gql`
-      query Users {
-        users {
-          id
-          name
-          email
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
 
 const router = createBrowserRouter([
   {
