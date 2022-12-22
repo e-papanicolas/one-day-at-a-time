@@ -2,18 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import Root from './routes/root';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import ErrorPage from './error-page';
-import Login from './components/auth/login';
-import Register from './components/auth/register';
-import Home from './components/home';
 
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  gql,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -39,27 +35,19 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-      },
-      {
-        path: '/home',
-        element: <Home />,
-      },
-    ],
-  },
-]);
+client
+  .query({
+    query: gql`
+      query CurrentUser {
+        currentUser {
+          id
+          name
+          email
+        }
+      }
+    `,
+  })
+  .then((result) => console.log(result));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -67,7 +55,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
+      <Root />
     </ApolloProvider>
   </React.StrictMode>,
 );
