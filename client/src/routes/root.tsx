@@ -1,34 +1,40 @@
 import '../styles/App.css';
-import { Outlet } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { gql } from '../__generated__';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import ErrorPage from '../error-page';
+import Home from '../components/home';
+import Register from '../components/auth/register';
+import Login from '../components/auth/login';
 
-const CURRENT_USER_QUERY = gql(`
-  query CurrentUser {
-    currentUser {
-      id
-      name
-      email
-    }
-  }
-`);
+// const CURRENT_USER_QUERY = gql(`
+//   query CurrentUser {
+//     currentUser {
+//       id
+//       name
+//       email
+//     }
+//   }
+// `);
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/register',
+        element: <Register />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ],
+  },
+]);
 
 function Root() {
-  const { loading, error, data } = useQuery(CURRENT_USER_QUERY);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>One Day at a Time</h1>
-
-        <h2>{data?.currentUser.name}'s photo a day journal</h2>
-      </header>
-      <Outlet />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default Root;

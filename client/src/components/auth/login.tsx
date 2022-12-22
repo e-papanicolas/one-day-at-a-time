@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { LoginResult } from '../../__generated__/graphql';
 import { gql } from '../../__generated__';
 
-type Props = {};
+interface Props {
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const LOGIN_MUTATION = gql(`
   mutation Login($loginInput: LoginUserInput!) {
@@ -15,34 +15,33 @@ const LOGIN_MUTATION = gql(`
 `);
 
 const Login = (props: Props) => {
-  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
 
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+  const [loginMutation, { error, data }] = useMutation(LOGIN_MUTATION, {
     variables: {
       loginInput: {
         email: formState.email,
         password: formState.password,
       },
     },
-    onCompleted: (loginResponse: LoginResult) => {
-      localStorage.setItem('token', loginResponse.token);
-      console.log(loginResponse);
-      navigate('/home');
-    },
   });
+
+  if (data) {
+    localStorage.setItem('token', data.login.token);
+    console.log(localStorage.getItem('token'));
+    // props.setIsLoggedIn(true);
+  }
 
   return (
     <div>
       <h3>login</h3>
       <form
-        method="post"
         onSubmit={(event) => {
           event.preventDefault();
-          login();
+          loginMutation();
         }}
       >
         <input
@@ -69,6 +68,7 @@ const Login = (props: Props) => {
         />
         <button type="submit">login</button>
       </form>
+      {error && <p>{error.message}</p>}
     </div>
   );
 };
