@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { gql } from '../../__generated__';
+import { gql } from '../__generated__';
 
-interface Props {
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface Props {}
 
 const LOGIN_MUTATION = gql(`
   mutation Login($loginInput: LoginUserInput!) {
@@ -32,7 +30,6 @@ const Login = (props: Props) => {
   if (data) {
     localStorage.setItem('token', data.login.token);
     console.log(localStorage.getItem('token'));
-    // props.setIsLoggedIn(true);
   }
 
   return (

@@ -13,11 +13,15 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
+    "\n  query CurrentUser {\n    currentUser {\n      id\n      name\n      email\n    }\n  }\n": types.CurrentUserDocument,
     "\n  mutation Login($loginInput: LoginUserInput!) {\n    login(loginInput: $loginInput) {\n      token\n    }\n  }\n": types.LoginDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      id\n      name\n      email\n    }\n  }\n": types.CreateUserDocument,
-    "\n      query CurrentUser {\n        currentUser {\n          id\n          name\n          email\n        }\n      }\n    ": types.CurrentUserDocument,
 };
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query CurrentUser {\n    currentUser {\n      id\n      name\n      email\n    }\n  }\n"): (typeof documents)["\n  query CurrentUser {\n    currentUser {\n      id\n      name\n      email\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -26,10 +30,6 @@ export function gql(source: "\n  mutation Login($loginInput: LoginUserInput!) {\
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      id\n      name\n      email\n    }\n  }\n"): (typeof documents)["\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      id\n      name\n      email\n    }\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n      query CurrentUser {\n        currentUser {\n          id\n          name\n          email\n        }\n      }\n    "): (typeof documents)["\n      query CurrentUser {\n        currentUser {\n          id\n          name\n          email\n        }\n      }\n    "];
 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
