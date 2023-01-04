@@ -1,13 +1,15 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import Login from './auth/login';
-import { useState } from 'react';
-import Header from './header';
+import Header from './Header';
+import { UserContext } from './App';
+import React from 'react';
 
 type Props = {};
 
 const Home = (props: Props) => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const user = React.useContext(UserContext);
+  console.log(user);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -17,7 +19,7 @@ const Home = (props: Props) => {
   return (
     <div className="App">
       <Header handleLogout={handleLogout} />
-
+      <h1>Home</h1>
       <Outlet />
     </div>
   );
