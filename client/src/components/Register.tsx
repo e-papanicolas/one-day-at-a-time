@@ -15,6 +15,8 @@ const REGISTER_MUTATION = gql(`
   }
 `);
 
+// TODO: work on this component - register should also log in the user
+
 const Register = (props: Props) => {
   // const navigate = useNavigate();
   const [formState, setFormState] = useState({

@@ -8,6 +8,9 @@ import React, { useState } from 'react';
 import EntryForm from './EntryForm';
 import { User } from '../__generated__/graphql';
 import App from './App';
+import EntryComponent from './Entry';
+
+// TODO: what to do about password? do i need to make a new type?
 
 const CURRENT_USER_QUERY = gql(`
   query CurrentUser {
@@ -40,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/new-entry',
         element: <EntryForm />,
+      },
+      {
+        path: '/entry/:entryId',
+        element: <EntryComponent />,
       },
     ],
   },
