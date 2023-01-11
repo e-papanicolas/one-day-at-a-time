@@ -18,5 +18,5 @@ export class Entry {
   userId: number;
 
   @Field(() => [Note], { nullable: 'items' })
-  notes?: Note[] | null;
+  notes?: Note[];
 }

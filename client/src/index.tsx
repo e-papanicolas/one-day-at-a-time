@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
-import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
 import {
@@ -11,6 +10,7 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import Root from './components/Root';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:8081/graphql',
@@ -38,7 +38,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <Root />
     </ApolloProvider>
   </React.StrictMode>,
 );

@@ -1,53 +1,28 @@
-import '../styles/App.css';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ErrorPage from '../error-page';
-import Home from './Home';
-import Login from './Login';
-import { gql } from '../__generated__';
-import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Header from './Header';
+// import { UserContext } from './Root';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const CURRENT_USER_QUERY = gql(`
-  query CurrentUser {
-    currentUser {
-      id
-      name
-      email
-    }
-  }
-`);
+type Props = {};
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-    errorElement: <ErrorPage />,
-    children: [],
-  },
-]);
+const App = (props: Props) => {
+  const navigate = useNavigate();
 
-interface IUser {
-  id: number;
-  name: string;
-  email: string;
-}
+  // const user = React.useContext(UserContext);
 
-export const UserContext = React.createContext<IUser | undefined>(undefined);
-
-function App() {
-  const [currentUser, setCurrentUser] = useState<IUser>();
-
-  const { loading, error, data } = useQuery(CURRENT_USER_QUERY, {
-    onCompleted: (data) => {
-      setCurrentUser(data.currentUser);
-    },
-  });
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
-    <UserContext.Provider value={currentUser}>
-      {currentUser ? <RouterProvider router={router} /> : <Login />}
-    </UserContext.Provider>
+    <div className="App">
+      <Header handleLogout={handleLogout} />
+      <Link to="/new-entry">Create a new entry</Link>
+      <Outlet />
+    </div>
   );
-}
+};
 
 export default App;
