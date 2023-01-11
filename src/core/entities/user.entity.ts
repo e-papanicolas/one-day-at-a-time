@@ -16,5 +16,5 @@ export class User {
   password: string;
 
   @Field(() => [Entry], { nullable: 'items' })
-  entries?: Entry[] | null;
+  entries?: Entry[];
 }
