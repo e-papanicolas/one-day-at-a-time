@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './Header';
 // import { UserContext } from './Root';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Nav from './Nav';
 
 type Props = {};
 
@@ -19,7 +19,7 @@ const App = (props: Props) => {
   return (
     <div className="App">
       <Header handleLogout={handleLogout} />
-      <Link to="/new-entry">Create a new entry</Link>
+      <Nav />
       <Outlet />
     </div>
   );

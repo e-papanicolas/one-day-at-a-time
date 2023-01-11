@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { gql } from '../__generated__';
 import { useMutation } from '@apollo/client';
 import { UserContext } from './Root';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 type Props = {};
 
@@ -17,6 +18,7 @@ const CREATE_ENTRY_MUTATION = gql(`
 
 const EntryForm = (props: Props) => {
   const user = React.useContext(UserContext);
+  const navigate = useNavigate();
 
   const [image, setImage] = useState<File | null>(null);
 
@@ -45,7 +47,7 @@ const EntryForm = (props: Props) => {
   const handleSubmitEntry = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = await uploadToCloudinary();
-    await createEntryMutation({
+    const newEntry = await createEntryMutation({
       variables: {
         createEntryInput: {
           date: new Date(),
@@ -54,6 +56,7 @@ const EntryForm = (props: Props) => {
         },
       },
     });
+    navigate(`/entry/${newEntry.data?.createEntry.id}`);
   };
 
   return (
