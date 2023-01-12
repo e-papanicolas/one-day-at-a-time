@@ -16,6 +16,9 @@ const documents = {
     "\n  query Entry($entryId: Float!) {\n    entry(id: $entryId) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n": types.EntryDocument,
     "\n  mutation CreateEntry($createEntryInput: CreateEntryInput!) {\n    createEntry(createEntryInput: $createEntryInput) {\n      id\n      date\n      image_url\n    }\n  }\n": types.CreateEntryDocument,
     "\n  mutation Login($loginInput: LoginUserInput!) {\n    login(loginInput: $loginInput) {\n      token\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation UpdateNote($updateNoteInput: UpdateNoteInput!) {\n  updateNote(updateNoteInput: $updateNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n": types.UpdateNoteDocument,
+    "\n  mutation RemoveNote($removeNoteId: Float!) {\n  removeNote(id: $removeNoteId) {\n    id\n  }\n}\n": types.RemoveNoteDocument,
+    "\n  mutation CreateNote($createNoteInput: CreateNoteInput!) {\n  createNote(createNoteInput: $createNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n": types.CreateNoteDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      id\n      name\n      email\n    }\n  }\n": types.CreateUserDocument,
     "\n  query CurrentUser {\n    currentUser {\n      id\n      name\n      email\n      password\n      entries {\n        id\n        date\n        image_url\n        userId\n        notes {\n          id\n          content\n          entryId\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
 };
@@ -32,6 +35,18 @@ export function gql(source: "\n  mutation CreateEntry($createEntryInput: CreateE
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation Login($loginInput: LoginUserInput!) {\n    login(loginInput: $loginInput) {\n      token\n    }\n  }\n"): (typeof documents)["\n  mutation Login($loginInput: LoginUserInput!) {\n    login(loginInput: $loginInput) {\n      token\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateNote($updateNoteInput: UpdateNoteInput!) {\n  updateNote(updateNoteInput: $updateNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n"): (typeof documents)["\n  mutation UpdateNote($updateNoteInput: UpdateNoteInput!) {\n  updateNote(updateNoteInput: $updateNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation RemoveNote($removeNoteId: Float!) {\n  removeNote(id: $removeNoteId) {\n    id\n  }\n}\n"): (typeof documents)["\n  mutation RemoveNote($removeNoteId: Float!) {\n  removeNote(id: $removeNoteId) {\n    id\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateNote($createNoteInput: CreateNoteInput!) {\n  createNote(createNoteInput: $createNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n"): (typeof documents)["\n  mutation CreateNote($createNoteInput: CreateNoteInput!) {\n  createNote(createNoteInput: $createNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
