@@ -1,8 +1,9 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import Header from './Header';
+import Header from './HeaderComponent';
 // import { UserContext } from './Root';
 import React from 'react';
 import Nav from './Nav';
+import Error from './Error';
 
 type Props = {
   errors: string[];
@@ -25,7 +26,7 @@ const App = ({ errors, setErrors }: Props) => {
       <Nav />
 
       {errors?.map((error) => {
-        return <p key={error}>{error}</p>;
+        return <Error key={error} error={error} />;
       })}
 
       <Outlet />

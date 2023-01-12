@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import EntryForm from './EntryForm';
 import { User } from '../__generated__/graphql';
 import App from './App';
-import EntryComponent from './Entry';
+import EntryComponent from './EntryComponent';
 import NoteForm from './NoteForm';
 import Register from './Register';
 

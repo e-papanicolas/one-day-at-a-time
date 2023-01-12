@@ -7,6 +7,8 @@ import NoteComponent from './Note';
 import UpdateEntryForm from './UpdateEntryForm';
 import uploadToCloudinary from '../utils/cloudinary-upload';
 
+// TODO: clean this component up, maybe make a file for gql queries/mutations
+
 type Props = {
   errors: string[];
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
