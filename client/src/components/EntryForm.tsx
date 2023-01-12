@@ -5,7 +5,10 @@ import { UserContext } from './Root';
 import { useNavigate } from 'react-router-dom';
 import uploadToCloudinary from '../utils/cloudinary-upload';
 
-type Props = {};
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const CREATE_ENTRY_MUTATION = gql(`
   mutation CreateEntry($createEntryInput: CreateEntryInput!) {
@@ -17,13 +20,17 @@ const CREATE_ENTRY_MUTATION = gql(`
   }
 `);
 
-const EntryForm = (props: Props) => {
+const EntryForm = ({ errors, setErrors }: Props) => {
   const user = React.useContext(UserContext);
   const navigate = useNavigate();
 
   const [image, setImage] = useState<File | null>(null);
 
-  const [createEntryMutation, { error }] = useMutation(CREATE_ENTRY_MUTATION);
+  const [createEntryMutation] = useMutation(CREATE_ENTRY_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
 
   const handleSubmitEntry = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,7 +70,6 @@ const EntryForm = (props: Props) => {
         </label>
         <button type="submit">Submit</button>
       </form>
-      {error && <p>{error.message}</p>}
     </div>
   );
 };

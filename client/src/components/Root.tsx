@@ -10,6 +10,7 @@ import { User } from '../__generated__/graphql';
 import App from './App';
 import EntryComponent from './Entry';
 import NoteForm from './NoteForm';
+import Register from './Register';
 
 // TODO: what to do about password? do i need to make a new type?
 
@@ -35,42 +36,60 @@ const CURRENT_USER_QUERY = gql(`
   }
 `);
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/new-entry',
-        element: <EntryForm />,
-      },
-      {
-        path: '/entry/:entryId',
-        element: <EntryComponent />,
-      },
-      {
-        path: '/new-note/:entryId',
-        element: <NoteForm />,
-      },
-    ],
-  },
-]);
-
 export const UserContext = React.createContext<User | undefined>(undefined);
 
 function Root() {
   const [currentUser, setCurrentUser] = useState<User>({} as User);
+  const [errors, setErrors] = useState<string[]>([]);
 
-  const { loading, error, data } = useQuery(CURRENT_USER_QUERY, {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <App errors={errors} setErrors={setErrors} />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '/new-entry',
+          element: <EntryForm errors={errors} setErrors={setErrors} />,
+        },
+        {
+          path: '/entry/:entryId',
+          element: <EntryComponent errors={errors} setErrors={setErrors} />,
+        },
+        {
+          path: '/new-note/:entryId',
+          element: <NoteForm errors={errors} setErrors={setErrors} />,
+        },
+      ],
+    },
+  ]);
+
+  const authRouter = createBrowserRouter([
+    {
+      path: '/',
+      element: <Login errors={errors} setErrors={setErrors} />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '/register',
+          element: <Register errors={errors} setErrors={setErrors} />,
+        },
+      ],
+    },
+  ]);
+
+  useQuery(CURRENT_USER_QUERY, {
     onCompleted: (data) => {
       console.log(data);
       setCurrentUser(data.currentUser);
     },
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
   });
 
   if (!currentUser) {
-    return <Login />;
+    return <RouterProvider router={authRouter} />;
   }
 
   return (

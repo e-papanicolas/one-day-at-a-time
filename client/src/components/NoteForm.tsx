@@ -3,7 +3,10 @@ import { gql } from '../__generated__';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
-type Props = {};
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const CREATE_NOTE_MUTATION = gql(`
   mutation CreateNote($createNoteInput: CreateNoteInput!) {
@@ -15,13 +18,17 @@ const CREATE_NOTE_MUTATION = gql(`
 }
 `);
 
-const NoteForm = (props: Props) => {
+const NoteForm = ({ errors, setErrors }: Props) => {
   let { entryId } = useParams();
   const navigate = useNavigate();
 
   const [content, setContent] = useState<string>('');
 
-  const [createNoteMutation, { error }] = useMutation(CREATE_NOTE_MUTATION);
+  const [createNoteMutation] = useMutation(CREATE_NOTE_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
 
   const handleSubmitNote = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,7 +60,6 @@ const NoteForm = (props: Props) => {
         </label>
         <button type="submit">Submit</button>
       </form>
-      {error && <p>{error.message}</p>}
     </div>
   );
 };

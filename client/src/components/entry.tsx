@@ -7,7 +7,10 @@ import NoteComponent from './Note';
 import UpdateEntryForm from './UpdateEntryForm';
 import uploadToCloudinary from '../utils/cloudinary-upload';
 
-type Props = {};
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const ENTRY_QUERY = gql(`
   query Entry($entryId: Float!) {
@@ -49,7 +52,9 @@ const UPDATE_ENTRY_MUTATION = gql(`
   }
 `);
 
-const EntryComponent = (props: Props) => {
+const forbiddenUpdateErrorMessage = `You can only update a picture on the same day it was uploaded.However if you really want, you can always delete the entry.`;
+
+const EntryComponent = ({ errors, setErrors }: Props) => {
   let { entryId } = useParams();
   const navigate = useNavigate();
 
@@ -62,35 +67,59 @@ const EntryComponent = (props: Props) => {
     onCompleted: (data) => {
       setEntry(data.entry);
     },
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
   });
   refetch({ entryId: Number(entryId) });
 
-  const [removeEntryMutation] = useMutation(REMOVE_ENTRY_MUTATION);
-  const [updateEntryMutation, { error }] = useMutation(UPDATE_ENTRY_MUTATION);
+  const [removeEntryMutation] = useMutation(REMOVE_ENTRY_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
+  const [updateEntryMutation] = useMutation(UPDATE_ENTRY_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
 
   const handleAddNote = () => {
     navigate(`/new-note/${entryId}`);
   };
 
+  const isCurrentDateEqualToEntryDate = () => {
+    const currentDate = new Date().toString().slice(0, 15);
+    const entryDate = new Date(currentEntry.date).toString().slice(0, 15);
+
+    return currentDate === entryDate;
+  };
+
   const handleUpdateEntry = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!image) console.error('no image'); // add some error handling
-    else {
-      const url = await uploadToCloudinary(image);
-      const updatedEntry = await updateEntryMutation({
-        variables: {
-          updateEntryInput: {
-            id: Number(entryId),
-            date: new Date(),
-            image_url: url,
-          },
-        },
-      });
-
-      setEntry(updatedEntry.data!.updateEntry);
-      setUpdating(false);
+    if (!isCurrentDateEqualToEntryDate()) {
+      setErrors([...errors, forbiddenUpdateErrorMessage]);
+      return;
     }
+
+    if (!image) {
+      setErrors([...errors, 'Please select an image']);
+    }
+
+    const url = await uploadToCloudinary(image!);
+    const updatedEntry = await updateEntryMutation({
+      variables: {
+        updateEntryInput: {
+          id: Number(entryId),
+          date: new Date(),
+          image_url: url,
+        },
+      },
+    });
+
+    setEntry(updatedEntry.data!.updateEntry);
+    setUpdating(false);
   };
 
   const handleRemoveEntry = async () => {
@@ -114,6 +143,7 @@ const EntryComponent = (props: Props) => {
         <UpdateEntryForm
           setImage={setImage}
           handleUpdateEntry={handleUpdateEntry}
+          setUpdating={setUpdating}
         />
       ) : (
         <img
@@ -131,10 +161,17 @@ const EntryComponent = (props: Props) => {
       <div>
         <h3>notes:</h3>
         {currentEntry.notes?.map((note) => {
-          return <NoteComponent key={note.id} note={note} refetch={refetch} />;
+          return (
+            <NoteComponent
+              key={note.id}
+              note={note}
+              refetch={refetch}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          );
         })}
       </div>
-      {error && <p>{error.message}</p>}
     </div>
   );
 };
