@@ -14,6 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query Entry($entryId: Float!) {\n    entry(id: $entryId) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n": types.EntryDocument,
+    "\n  mutation RemoveEntry($removeEntryId: Float!) {\n    removeEntry(id: $removeEntryId) {\n      id\n    }\n  }\n": types.RemoveEntryDocument,
+    "\n  mutation UpdateEntry($updateEntryInput: UpdateEntryInput!) {\n    updateEntry(updateEntryInput: $updateEntryInput) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n": types.UpdateEntryDocument,
     "\n  mutation CreateEntry($createEntryInput: CreateEntryInput!) {\n    createEntry(createEntryInput: $createEntryInput) {\n      id\n      date\n      image_url\n    }\n  }\n": types.CreateEntryDocument,
     "\n  mutation Login($loginInput: LoginUserInput!) {\n    login(loginInput: $loginInput) {\n      token\n    }\n  }\n": types.LoginDocument,
     "\n  mutation UpdateNote($updateNoteInput: UpdateNoteInput!) {\n  updateNote(updateNoteInput: $updateNoteInput) {\n    id\n    entryId\n    content\n  }\n}\n": types.UpdateNoteDocument,
@@ -27,6 +29,14 @@ const documents = {
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query Entry($entryId: Float!) {\n    entry(id: $entryId) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n"): (typeof documents)["\n  query Entry($entryId: Float!) {\n    entry(id: $entryId) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation RemoveEntry($removeEntryId: Float!) {\n    removeEntry(id: $removeEntryId) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveEntry($removeEntryId: Float!) {\n    removeEntry(id: $removeEntryId) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateEntry($updateEntryInput: UpdateEntryInput!) {\n    updateEntry(updateEntryInput: $updateEntryInput) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateEntry($updateEntryInput: UpdateEntryInput!) {\n    updateEntry(updateEntryInput: $updateEntryInput) {\n      id\n      date\n      image_url\n      userId\n      notes {\n        id\n        entryId\n        content\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
