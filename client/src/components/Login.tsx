@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '../__generated__';
+import { Outlet } from 'react-router-dom';
 
-interface Props {}
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const LOGIN_MUTATION = gql(`
   mutation Login($loginInput: LoginUserInput!) {
@@ -12,18 +16,21 @@ const LOGIN_MUTATION = gql(`
   }
 `);
 
-const Login = (props: Props) => {
+const Login = ({ errors, setErrors }: Props) => {
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
 
-  const [loginMutation, { error, data }] = useMutation(LOGIN_MUTATION, {
+  const [loginMutation, { data }] = useMutation(LOGIN_MUTATION, {
     variables: {
       loginInput: {
         email: formState.email,
         password: formState.password,
       },
+    },
+    onError: (error) => {
+      setErrors([...errors, error.message]);
     },
   });
 
@@ -65,7 +72,7 @@ const Login = (props: Props) => {
         />
         <button type="submit">login</button>
       </form>
-      {error && <p>{error.message}</p>}
+      <Outlet />
     </div>
   );
 };

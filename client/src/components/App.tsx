@@ -4,9 +4,12 @@ import Header from './Header';
 import React from 'react';
 import Nav from './Nav';
 
-type Props = {};
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
-const App = (props: Props) => {
+const App = ({ errors, setErrors }: Props) => {
   const navigate = useNavigate();
 
   // const user = React.useContext(UserContext);
@@ -20,6 +23,11 @@ const App = (props: Props) => {
     <div className="App">
       <Header handleLogout={handleLogout} />
       <Nav />
+
+      {errors?.map((error) => {
+        return <p key={error}>{error}</p>;
+      })}
+
       <Outlet />
     </div>
   );

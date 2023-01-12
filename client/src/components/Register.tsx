@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '../__generated__';
 
-type Props = {};
+type Props = {
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const REGISTER_MUTATION = gql(`
   mutation CreateUser($createUserInput: CreateUserInput!) {
@@ -17,7 +20,7 @@ const REGISTER_MUTATION = gql(`
 
 // TODO: work on this component - register should also log in the user
 
-const Register = (props: Props) => {
+const Register = ({ errors, setErrors }: Props) => {
   // const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: '',
@@ -25,7 +28,7 @@ const Register = (props: Props) => {
     password: '',
   });
 
-  const [register, { data, loading, error }] = useMutation(REGISTER_MUTATION, {
+  const [register] = useMutation(REGISTER_MUTATION, {
     variables: {
       createUserInput: {
         name: formState.name,
@@ -35,6 +38,9 @@ const Register = (props: Props) => {
     },
     onCompleted: (registerResponse) => {
       console.log(registerResponse);
+    },
+    onError: (error) => {
+      setErrors([...errors, error.message]);
     },
   });
 

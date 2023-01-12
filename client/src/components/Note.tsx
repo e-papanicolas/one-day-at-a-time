@@ -12,6 +12,8 @@ type Props = {
         }>
       | undefined,
   ) => Promise<ApolloQueryResult<EntryQuery>>;
+  errors: string[];
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const UPDATE_NOTE_MUTATION = gql(`
@@ -32,13 +34,21 @@ const REMOVE_NOTE_MUTATION = gql(`
 }
 `);
 
-const NoteComponent = ({ refetch, note }: Props) => {
+const NoteComponent = ({ refetch, note, errors, setErrors }: Props) => {
   const [currentNote, setNote] = useState<Note>(note);
   const [updating, setUpdating] = useState<boolean>(false);
   const [content, setContent] = useState<string>(currentNote.content);
 
-  const [updateNoteMutation, { error }] = useMutation(UPDATE_NOTE_MUTATION);
-  const [removeNoteMutation] = useMutation(REMOVE_NOTE_MUTATION);
+  const [updateNoteMutation] = useMutation(UPDATE_NOTE_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
+  const [removeNoteMutation] = useMutation(REMOVE_NOTE_MUTATION, {
+    onError: (error) => {
+      setErrors([...errors, error.message]);
+    },
+  });
 
   const handleUpdateNote = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -89,8 +99,6 @@ const NoteComponent = ({ refetch, note }: Props) => {
           </form>
         </div>
       )}
-
-      {error && <p>{error.message}</p>}
     </div>
   );
 };
