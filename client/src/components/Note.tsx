@@ -51,6 +51,7 @@ const NoteComponent = ({ refetch, note }: Props) => {
         },
       },
     });
+
     setNote(updatedNote.data!.updateNote);
     setUpdating(false);
   };
@@ -61,6 +62,7 @@ const NoteComponent = ({ refetch, note }: Props) => {
         removeNoteId: currentNote.id,
       },
     });
+
     refetch({ entryId: currentNote.entryId });
   };
 
@@ -87,6 +89,7 @@ const NoteComponent = ({ refetch, note }: Props) => {
           </form>
         </div>
       )}
+
       {error && <p>{error.message}</p>}
     </div>
   );

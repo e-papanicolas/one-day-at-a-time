@@ -3,6 +3,7 @@ import { gql } from '../__generated__';
 import { useMutation } from '@apollo/client';
 import { UserContext } from './Root';
 import { useNavigate } from 'react-router-dom';
+import uploadToCloudinary from '../utils/cloudinary-upload';
 
 type Props = {};
 
@@ -22,41 +23,26 @@ const EntryForm = (props: Props) => {
 
   const [image, setImage] = useState<File | null>(null);
 
-  const uploadToCloudinary = async () => {
-    const data = new FormData();
-    data.append('file', image as File);
-    data.append('cloud_name', 'eleni');
-    data.append('upload_preset', 'yuf8gy6c');
-    const response = await fetch(
-      'https://api.cloudinary.com/v1_1/eleni/image/upload',
-      {
-        method: 'POST',
-        body: data,
-      },
-    );
-    const file = await response.json();
-    const newUrl: string = file.secure_url;
-    return newUrl;
-  };
-
-  const [createEntryMutation, { error, data }] = useMutation(
-    CREATE_ENTRY_MUTATION,
-  );
-  console.log(data);
+  const [createEntryMutation, { error }] = useMutation(CREATE_ENTRY_MUTATION);
 
   const handleSubmitEntry = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const url = await uploadToCloudinary();
-    const newEntry = await createEntryMutation({
-      variables: {
-        createEntryInput: {
-          date: new Date(),
-          image_url: url,
-          userId: user!.id,
+
+    if (!image) console.error('no image'); // add some error handling
+    else {
+      const url = await uploadToCloudinary(image);
+      const newEntry = await createEntryMutation({
+        variables: {
+          createEntryInput: {
+            date: new Date(),
+            image_url: url,
+            userId: user!.id,
+          },
         },
-      },
-    });
-    navigate(`/entry/${newEntry.data?.createEntry.id}`);
+      });
+
+      navigate(`/entry/${newEntry.data?.createEntry.id}`);
+    }
   };
 
   return (
@@ -68,7 +54,6 @@ const EntryForm = (props: Props) => {
             type="file"
             name="image"
             accept="image/*"
-            // on change update image state
             onChange={(event) => {
               if (event.target.files) {
                 setImage(event.target.files[0]);
