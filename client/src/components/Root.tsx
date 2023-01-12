@@ -9,6 +9,7 @@ import EntryForm from './EntryForm';
 import { User } from '../__generated__/graphql';
 import App from './App';
 import EntryComponent from './Entry';
+import NoteForm from './NoteForm';
 
 // TODO: what to do about password? do i need to make a new type?
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: '/entry/:entryId',
         element: <EntryComponent />,
+      },
+      {
+        path: '/new-note/:entryId',
+        element: <NoteForm />,
       },
     ],
   },

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { gql } from '../__generated__';
 import { useMutation } from '@apollo/client';
 import { UserContext } from './Root';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
