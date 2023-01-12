@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import Header from './HeaderComponent';
+import Header from './Header';
 // import { UserContext } from './Root';
 import React from 'react';
 import Nav from './Nav';
