@@ -20,6 +20,8 @@ const CREATE_ENTRY_MUTATION = gql(`
   }
 `);
 
+const cannotAddEntryErrorMessage = `Sorry! You can only add one entry per day.`;
+
 const EntryForm = ({ errors, setErrors }: Props) => {
   const user = React.useContext(UserContext);
   const navigate = useNavigate();
@@ -32,11 +34,26 @@ const EntryForm = ({ errors, setErrors }: Props) => {
     },
   });
 
+  const checkThatEntryForTodayAlreadyExists = () => {
+    const currentDate = new Date().toString().slice(0, 15);
+    const entryForToday = user!.entries.find((entry) => {
+      return new Date(entry.date).toString().slice(0, 15) === currentDate;
+    });
+    return entryForToday ? true : false;
+  };
+
   const handleSubmitEntry = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!image) console.error('no image'); // add some error handling
-    else {
+    if (checkThatEntryForTodayAlreadyExists()) {
+      setErrors([...errors, cannotAddEntryErrorMessage]);
+      navigate('/');
+      return;
+    }
+
+    if (!image) {
+      setErrors([...errors, 'Please select an image']);
+    } else {
       const url = await uploadToCloudinary(image);
       const newEntry = await createEntryMutation({
         variables: {

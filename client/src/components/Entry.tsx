@@ -54,7 +54,7 @@ const UPDATE_ENTRY_MUTATION = gql(`
   }
 `);
 
-const forbiddenUpdateErrorMessage = `You can only update a picture on the same day it was uploaded.However if you really want, you can always delete the entry.`;
+const forbiddenUpdateErrorMessage = `Sorry! You can only update a picture on the same day it was uploaded.However if you really want, you can always delete the entry.`;
 
 const EntryComponent = ({ errors, setErrors }: Props) => {
   let { entryId } = useParams();
@@ -102,6 +102,7 @@ const EntryComponent = ({ errors, setErrors }: Props) => {
 
     if (!isCurrentDateEqualToEntryDate()) {
       setErrors([...errors, forbiddenUpdateErrorMessage]);
+      setUpdating(false);
       return;
     }
 
@@ -167,7 +168,7 @@ const EntryComponent = ({ errors, setErrors }: Props) => {
             <NoteComponent
               key={note.id}
               note={note}
-              refetch={refetch}
+              refetchEntry={refetch}
               errors={errors}
               setErrors={setErrors}
             />

@@ -5,7 +5,7 @@ import { ApolloQueryResult, useMutation } from '@apollo/client';
 
 type Props = {
   note: Note;
-  refetch: (
+  refetchEntry: (
     variables?:
       | Partial<{
           entryId: number;
@@ -34,7 +34,7 @@ const REMOVE_NOTE_MUTATION = gql(`
 }
 `);
 
-const NoteComponent = ({ refetch, note, errors, setErrors }: Props) => {
+const NoteComponent = ({ refetchEntry, note, errors, setErrors }: Props) => {
   const [currentNote, setNote] = useState<Note>(note);
   const [updating, setUpdating] = useState<boolean>(false);
   const [content, setContent] = useState<string>(currentNote.content);
@@ -73,7 +73,7 @@ const NoteComponent = ({ refetch, note, errors, setErrors }: Props) => {
       },
     });
 
-    refetch({ entryId: currentNote.entryId });
+    refetchEntry({ entryId: currentNote.entryId });
   };
 
   return (
