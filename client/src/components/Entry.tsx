@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import NoteComponent from './Note';
 import UpdateEntryForm from './UpdateEntryForm';
 import uploadToCloudinary from '../utils/cloudinary-upload';
+import '../styles/Entry.css';
 
 // TODO: clean this component up, maybe make a file for gql queries/mutations
 
@@ -133,36 +134,33 @@ const EntryComponent = ({ errors, setErrors }: Props) => {
     navigate('/');
   };
 
+  const formatDate = (date: string) => {
+    return new Date(date).toString().slice(0, 15);
+  };
+
   return (
-    <div>
-      <h2>Entry</h2>
-      <div>
-        <button onClick={() => setUpdating(true)}>edit entry</button>
-        <button onClick={handleRemoveEntry}>delete entry</button>
-      </div>
-      <div>{currentEntry.date}</div>
+    <div className="entry-container">
+      <div className="entry">
+        <h2>{formatDate(currentEntry.date)}</h2>
+        <div>
+          <button onClick={() => setUpdating(true)}>edit entry</button>
+          <button onClick={handleRemoveEntry}>delete entry</button>
+        </div>
 
-      {updating ? (
-        <UpdateEntryForm
-          setImage={setImage}
-          handleUpdateEntry={handleUpdateEntry}
-          setUpdating={setUpdating}
-        />
-      ) : (
-        <img
-          src={currentEntry.image_url}
-          alt="entry"
-          style={{ width: '250px' }}
-        />
-      )}
+        {updating ? (
+          <UpdateEntryForm
+            setImage={setImage}
+            handleUpdateEntry={handleUpdateEntry}
+            setUpdating={setUpdating}
+          />
+        ) : (
+          <img src={currentEntry.image_url} alt="entry" />
+        )}
 
-      <div>
-        Do you want to add a note for today so you can remember how you are
-        feeling?
+        <button onClick={handleAddNote}>Add a note for today's entry</button>
       </div>
-      <button onClick={handleAddNote}>add a note</button>
-      <div>
-        <h3>notes:</h3>
+      <div className="notes">
+        <h3>Notes:</h3>
         {currentEntry.notes?.map((note) => {
           return (
             <NoteComponent

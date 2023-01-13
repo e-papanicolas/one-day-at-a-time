@@ -1,0 +1,47 @@
+.entry-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.entry {
+  border: 2px white solid;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notes {
+  border: 2px white solid;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.note {
+  border: 2px white solid;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+button {
+  background-color: #ffe01a;
+  color: #09a7b3;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+img {
+  width: 250px;
+  border: 2px solid #ffe01a;
+}

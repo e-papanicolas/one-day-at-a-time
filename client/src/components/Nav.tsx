@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type Props = {};
+type Props = {
+  handleLogout: () => void;
+};
 
 const Nav = (props: Props) => {
   return (
-    <div>
-      Nav:
-      <Link to="/new-entry">Create a new entry</Link>
+    <div className="nav">
       <Link to="/">Home</Link>
+      <Link to="/new-entry">New entry</Link>
+      <Link to="/" onClick={props.handleLogout}>
+        Logout
+      </Link>
     </div>
   );
 };

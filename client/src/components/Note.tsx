@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { EntryQuery, Note } from '../__generated__/graphql';
 import { gql } from '../__generated__';
 import { ApolloQueryResult, useMutation } from '@apollo/client';
+import '../styles/Entry.css';
 
 type Props = {
   note: Note;
@@ -77,8 +78,7 @@ const NoteComponent = ({ refetchEntry, note, errors, setErrors }: Props) => {
   };
 
   return (
-    <div>
-      <h3>Note</h3>
+    <div className="note">
       <div>{currentNote.content}</div>
       <button onClick={() => setUpdating(true)}>edit</button>
       <button onClick={handleRemoveNote}>delete</button>
@@ -95,8 +95,9 @@ const NoteComponent = ({ refetchEntry, note, errors, setErrors }: Props) => {
                 }}
               />
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">submit</button>
           </form>
+          <button onClick={() => setUpdating(false)}>cancel</button>
         </div>
       )}
     </div>

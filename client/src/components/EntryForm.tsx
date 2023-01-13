@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import { UserContext } from './Root';
 import { useNavigate } from 'react-router-dom';
 import uploadToCloudinary from '../utils/cloudinary-upload';
+import '../styles/Entry.css';
 
 type Props = {
   errors: string[];
