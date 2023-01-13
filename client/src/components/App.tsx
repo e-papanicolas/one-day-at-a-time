@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
 // import { UserContext } from './Root';
 import React from 'react';
@@ -11,19 +11,18 @@ type Props = {
 };
 
 const App = ({ errors, setErrors }: Props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const user = React.useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/');
   };
 
   return (
     <div className="App">
-      <Header handleLogout={handleLogout} />
-      <Nav />
+      <Header />
+      <Nav handleLogout={handleLogout} />
 
       {errors?.map((error) => {
         return <Error key={error} error={error} />;

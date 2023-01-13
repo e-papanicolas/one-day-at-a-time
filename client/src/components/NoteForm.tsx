@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { gql } from '../__generated__';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import '../styles/Entry.css';
 
 type Props = {
   errors: string[];
@@ -48,6 +49,7 @@ const NoteForm = ({ errors, setErrors }: Props) => {
   return (
     <div>
       <h2>Add a note</h2>
+      <button onClick={() => navigate(`/entry/${entryId}`)}>back</button>
       <form onSubmit={handleSubmitNote}>
         <label htmlFor="content" className="content">
           <input
