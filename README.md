@@ -1,6 +1,6 @@
 ## Description
 
-A photo-a-day journal.
+A photo-a-day journal. Users can upload one photo to represent each day. Users can add notes to each daily entry, and can view a timeline of all entries.
 
 ## Technologies
 
@@ -11,8 +11,8 @@ A photo-a-day journal.
 - Prisma: ORM
 - Docker: container for database
 - Jest: testing
-- Redis: cache
 - React: front end framework
+- Redis: cache
 
 ## Installation
 
