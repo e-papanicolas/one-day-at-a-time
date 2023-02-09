@@ -13,7 +13,7 @@ import { setContext } from '@apollo/client/link/context';
 import Root from './components/Root';
 
 const httpLink = createHttpLink({
-  uri: 'https://one-day-app.onrender.com/graphl',
+  uri: 'https://one-day-app.onrender.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -27,7 +27,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  uri: 'https://one-day-app.onrender.com/graphl',
+  uri: 'https://one-day-app.onrender.com/graphql',
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
