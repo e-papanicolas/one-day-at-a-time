@@ -5,6 +5,8 @@ import React from 'react';
 import Nav from './Nav';
 import Error from './Error';
 
+import { client } from '../index';
+
 type Props = {
   errors: string[];
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
@@ -16,7 +18,7 @@ const App = ({ errors, setErrors }: Props) => {
   // const user = React.useContext(UserContext);
 
   const handleLogout = () => {
-    localStorage.clear();
+    client.resetStore();
   };
 
   return (
