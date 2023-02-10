@@ -5,7 +5,7 @@ import React from 'react';
 import Nav from './Nav';
 import Error from './Error';
 
-import { client } from '../index';
+// import { client } from '../index';
 
 type Props = {
   errors: string[];
