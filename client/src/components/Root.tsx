@@ -41,11 +41,25 @@ export const UserContext = React.createContext<User | undefined>(undefined);
 function Root() {
   const [currentUser, setCurrentUser] = useState<User>({} as User);
   const [errors, setErrors] = useState<string[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <App errors={errors} setErrors={setErrors} />,
+      element:
+        isLoggedIn || currentUser.email ? (
+          <App
+            errors={errors}
+            setErrors={setErrors}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        ) : (
+          <Login
+            errors={errors}
+            setErrors={setErrors}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        ),
       errorElement: <ErrorPage />,
       children: [
         {
@@ -62,19 +76,10 @@ function Root() {
         },
       ],
     },
-  ]);
-
-  const authRouter = createBrowserRouter([
     {
-      path: '/',
-      element: <Login errors={errors} setErrors={setErrors} />,
+      path: '/register',
+      element: <Register errors={errors} setErrors={setErrors} />,
       errorElement: <ErrorPage />,
-      children: [
-        {
-          path: '/register',
-          element: <Register errors={errors} setErrors={setErrors} />,
-        },
-      ],
     },
   ]);
 
@@ -87,10 +92,6 @@ function Root() {
       setErrors([...errors, error.message]);
     },
   });
-
-  if (!currentUser) {
-    return <RouterProvider router={authRouter} />;
-  }
 
   return (
     <UserContext.Provider value={currentUser}>
