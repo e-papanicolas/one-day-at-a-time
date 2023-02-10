@@ -13,8 +13,9 @@ import { setContext } from '@apollo/client/link/context';
 import Root from './components/Root';
 
 const httpLink = createHttpLink({
-  uri: process.env.GQL_URI,
+  uri: process.env.REACT_APP_GQL_URI,
 });
+console.log(httpLink);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
@@ -27,7 +28,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  uri: process.env.GQL_URI,
+  uri: process.env.REACT_APP_GQL_URI,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
