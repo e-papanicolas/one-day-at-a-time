@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '../__generated__';
-import { Outlet } from 'react-router-dom';
 
 type Props = {
   errors: string[];
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const LOGIN_MUTATION = gql(`
@@ -16,13 +16,13 @@ const LOGIN_MUTATION = gql(`
   }
 `);
 
-const Login = ({ errors, setErrors }: Props) => {
+const Login = ({ errors, setErrors, setIsLoggedIn }: Props) => {
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
 
-  const [loginMutation, { data }] = useMutation(LOGIN_MUTATION, {
+  const [loginMutation] = useMutation(LOGIN_MUTATION, {
     variables: {
       loginInput: {
         email: formState.email,
@@ -32,12 +32,12 @@ const Login = ({ errors, setErrors }: Props) => {
     onError: (error) => {
       setErrors([...errors, error.message]);
     },
+    onCompleted: (data) => {
+      setIsLoggedIn(true);
+      console.log(data);
+      localStorage.setItem('token', data.login.token);
+    },
   });
-
-  if (data) {
-    localStorage.setItem('token', data.login.token);
-    console.log(localStorage.getItem('token'));
-  }
 
   return (
     <div>
@@ -72,7 +72,6 @@ const Login = ({ errors, setErrors }: Props) => {
         />
         <button type="submit">login</button>
       </form>
-      <Outlet />
     </div>
   );
 };
