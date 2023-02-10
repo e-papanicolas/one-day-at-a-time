@@ -15,7 +15,6 @@ import Root from './components/Root';
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GQL_URI,
 });
-console.log(httpLink);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
